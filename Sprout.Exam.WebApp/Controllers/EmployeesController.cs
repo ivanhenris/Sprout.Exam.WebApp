@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Sprout.Exam.Business.DataTransferObjects;
 using Sprout.Exam.Common.Enums;
+using Sprout.Exam.WebApp.Repository;
 
 namespace Sprout.Exam.WebApp.Controllers
 {
@@ -15,6 +16,12 @@ namespace Sprout.Exam.WebApp.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
+        private readonly IRepository<EmployeeDto, int> _employeeRepository;
+
+        public EmployeesController(IRepository<EmployeeDto, int> employeeRepository)
+        {
+            _employeeRepository = employeeRepository;
+        }
 
         /// <summary>
         /// Refactor this method to go through proper layers and fetch from the DB.
@@ -23,7 +30,7 @@ namespace Sprout.Exam.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await Task.FromResult(StaticEmployees.ResultList);
+            var result = await _employeeRepository.GetAll();
             return Ok(result);
         }
 
@@ -34,7 +41,7 @@ namespace Sprout.Exam.WebApp.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await Task.FromResult(StaticEmployees.ResultList.FirstOrDefault(m => m.Id == id));
+            var result = await _employeeRepository.GetById(id);
             return Ok(result);
         }
 
@@ -45,12 +52,14 @@ namespace Sprout.Exam.WebApp.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(EditEmployeeDto input)
         {
-            var item = await Task.FromResult(StaticEmployees.ResultList.FirstOrDefault(m => m.Id == input.Id));
+            var item = await _employeeRepository.GetById(input.Id);
             if (item == null) return NotFound();
             item.FullName = input.FullName;
             item.Tin = input.Tin;
-            item.Birthdate = input.Birthdate.ToString("yyyy-MM-dd");
-            item.TypeId = input.TypeId;
+            item.Birthdate = input.Birthdate;
+            item.EmployeeTypeId = input.TypeId;
+
+            await _employeeRepository.Update(item);
             return Ok(item);
         }
 
@@ -61,17 +70,19 @@ namespace Sprout.Exam.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(CreateEmployeeDto input)
         {
+            var id = 0;
 
-           var id = await Task.FromResult(StaticEmployees.ResultList.Max(m => m.Id) + 1);
-
-            StaticEmployees.ResultList.Add(new EmployeeDto
+            var employee = new EmployeeDto
             {
-                Birthdate = input.Birthdate.ToString("yyyy-MM-dd"),
+                Birthdate = input.Birthdate,
                 FullName = input.FullName,
                 Id = id,
                 Tin = input.Tin,
-                TypeId = input.TypeId
-            });
+                EmployeeTypeId = input.TypeId
+            };
+
+            await _employeeRepository.Insert(employee);
+            await _employeeRepository.Save();
 
             return Created($"/api/employees/{id}", id);
         }
@@ -84,9 +95,8 @@ namespace Sprout.Exam.WebApp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await Task.FromResult(StaticEmployees.ResultList.FirstOrDefault(m => m.Id == id));
-            if (result == null) return NotFound();
-            StaticEmployees.ResultList.RemoveAll(m => m.Id == id);
+            await _employeeRepository.Delete(id);
+            await _employeeRepository.Save();
             return Ok(id);
         }
 
@@ -105,7 +115,7 @@ namespace Sprout.Exam.WebApp.Controllers
             var result = await Task.FromResult(StaticEmployees.ResultList.FirstOrDefault(m => m.Id == id));
 
             if (result == null) return NotFound();
-            var type = (EmployeeType) result.TypeId;
+            var type = (EmployeeType) result.EmployeeTypeId;
             return type switch
             {
                 EmployeeType.Regular =>
