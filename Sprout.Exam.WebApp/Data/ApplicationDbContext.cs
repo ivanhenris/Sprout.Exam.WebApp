@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Sprout.Exam.Business.DataTransferObjects;
 using Sprout.Exam.WebApp.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,13 @@ namespace Sprout.Exam.WebApp.Data
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
+        }
+
+        public virtual DbSet<EmployeeDto> Employee { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
         }
     }
 }

@@ -9,8 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sprout.Exam.Business.DataTransferObjects;
 using Sprout.Exam.WebApp.Data;
 using Sprout.Exam.WebApp.Models;
+using Sprout.Exam.WebApp.Repository;
 
 namespace Sprout.Exam.WebApp
 {
@@ -29,6 +31,8 @@ namespace Sprout.Exam.WebApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IRepository<EmployeeDto, int>, EmployeeRepository>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
