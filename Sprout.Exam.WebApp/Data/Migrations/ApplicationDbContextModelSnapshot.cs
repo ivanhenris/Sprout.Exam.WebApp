@@ -265,19 +265,20 @@ namespace Sprout.Exam.WebApp.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Birthdate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("EmployeeTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Tin")
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("EmployeeTypeId");
 
                     b.HasKey("Id");
 

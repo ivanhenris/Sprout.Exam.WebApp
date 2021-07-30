@@ -49,7 +49,7 @@ namespace Sprout.Exam.WebApp.Repository
                 employee.FullName = employeeDto.FullName;
                 employee.Tin = employeeDto.Tin;
                 employee.Birthdate = employeeDto.Birthdate;
-                employee.EmployeeTypeId = employeeDto.EmployeeTypeId;
+                employee.TypeId = employeeDto.TypeId;
                 await _context.SaveChangesAsync();
             }
         }

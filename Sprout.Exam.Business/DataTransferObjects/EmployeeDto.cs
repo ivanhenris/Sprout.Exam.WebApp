@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Sprout.Exam.Business.DataTransferObjects
@@ -10,7 +11,9 @@ namespace Sprout.Exam.Business.DataTransferObjects
         public string FullName { get; set; }
         public DateTime Birthdate { get; set; }
         public string Tin { get; set; }
-        public int EmployeeTypeId { get; set; }
+
+        [Column("EmployeeTypeId")]
+        public int TypeId { get; set; }
         public bool IsDeleted { get; set; }
     }
 }
