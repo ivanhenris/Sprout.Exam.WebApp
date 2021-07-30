@@ -57,7 +57,7 @@ namespace Sprout.Exam.WebApp.Controllers
             item.FullName = input.FullName;
             item.Tin = input.Tin;
             item.Birthdate = input.Birthdate;
-            item.EmployeeTypeId = input.TypeId;
+            item.TypeId = input.TypeId;
 
             await _employeeRepository.Update(item);
             return Ok(item);
@@ -78,7 +78,7 @@ namespace Sprout.Exam.WebApp.Controllers
                 FullName = input.FullName,
                 Id = id,
                 Tin = input.Tin,
-                EmployeeTypeId = input.TypeId
+                TypeId = input.TypeId
             };
 
             await _employeeRepository.Insert(employee);
@@ -115,7 +115,7 @@ namespace Sprout.Exam.WebApp.Controllers
             var result = await Task.FromResult(StaticEmployees.ResultList.FirstOrDefault(m => m.Id == id));
 
             if (result == null) return NotFound();
-            var type = (EmployeeType) result.EmployeeTypeId;
+            var type = (EmployeeType) result.TypeId;
             return type switch
             {
                 EmployeeType.Regular =>
