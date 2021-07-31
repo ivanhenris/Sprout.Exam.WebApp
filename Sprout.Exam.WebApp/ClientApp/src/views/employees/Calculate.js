@@ -6,7 +6,7 @@ export class EmployeeCalculate extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1,absentDays: 0,workedDays: 0,netIncome: 0, loading: true,loadingCalculate:false, label: '' };
+    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1,period: 0,netIncome: 0, loading: true,loadingCalculate:false, label: '', payLabel: '', tax: 0, basePay: 0 };
   }
 
   async componentDidMount() {
@@ -58,18 +58,25 @@ export class EmployeeCalculate extends Component {
 </div>
 </div>
 
-{ this.state.typeId === 1?
- <div className="form-row">
-     <div className='form-group col-md-12'><label>Salary: 20000 </label></div>
-     <div className='form-group col-md-12'><label>Tax: 12% </label></div>
-</div> : <div className="form-row">
-<div className='form-group col-md-12'><label>Rate Per Day: 500 </label></div>
-</div> }
+
+<div className="form-row">
+<div className='form-group col-md-12'>
+  <label>{this.state.payLabel}: <b>{this.state.basePay}</b></label>
+</div>
+</div>
+
+{ this.state.tax ? 
+  <div className="form-row">
+<div className='form-group col-md-12'>
+  <label>Tax: <b>{this.state.tax}%</b></label>
+</div>
+</div>
+: null}
 
 <div className="form-row">
 <div className='form-group col-md-6'>
-  <label htmlFor='inputAbsentDays4'>{this.state.label} </label>
-  <input type='text' className='form-control' id='inputAbsentDays4' onChange={this.handleChange.bind(this)} value={this.state.absentDays} name="absentDays" placeholder='Absent Days' />
+  <label htmlFor='inputPeriod4'>{this.state.label}: *</label>
+  <input type='text' className='form-control' id='inputPeriod4' onChange={this.handleChange.bind(this)} value={this.state.period} name="period" placeholder='0' />
 </div>
 </div>
 
@@ -116,7 +123,7 @@ export class EmployeeCalculate extends Component {
 
     if(response.status === 200){
         const data = await response.json();
-        this.setState({ id: data.id,fullName: data.fullName,birthdate: data.birthdate,tin: data.tin,typeId: data.typeId, loading: false,loadingCalculate: false });
+        this.setState({ id: data.id,fullName: data.fullName,birthdate: data.birthdate,tin: data.tin,typeId: data.typeId, loading: false,loadingCalculate: false, basePay: data.basePay });
     }
     else{
         alert("There was an error occured.");
@@ -131,6 +138,6 @@ export class EmployeeCalculate extends Component {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
     const data = await response.json();
-    this.setState({ label: data.dayLabel, loading: false });
+    this.setState({ label: data.dayLabel, payLabel: data.payLabel, tax: data.tax, loading: false });
   }
 }
