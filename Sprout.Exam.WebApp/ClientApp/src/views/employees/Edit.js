@@ -65,7 +65,7 @@ export class EmployeeEdit extends Component {
 </div>
 <div className='form-row'>
 <div className='form-group col-md-6'>
-  <label htmlFor='inputBasePay4'>{this.state.label}: </label>
+  <label htmlFor='inputBasePay4'>{this.state.label}: *</label>
   <input type='text' className='form-control' id='inputBasePay4' onChange={this.handleChange.bind(this)} name="basePay" value={this.state.basePay} placeholder='Full Name' />
 </div>
 </div>

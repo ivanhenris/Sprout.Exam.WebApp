@@ -64,7 +64,7 @@ export class EmployeeCreate extends Component {
 <div className="form-row">
 <div className='form-group col-md-6'>
   <label htmlFor='inputBasePay4'>
-  {this.state.label}
+  {this.state.label}: *
   </label>
   <input type='text' className='form-control' id='inputBasePay4' onChange={this.handleChange.bind(this)} value={this.state.basePay} name="basePay" placeholder='0'/>
 </div>
