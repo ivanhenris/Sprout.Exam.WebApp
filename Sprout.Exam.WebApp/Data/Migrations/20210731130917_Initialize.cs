@@ -17,7 +17,8 @@ namespace Sprout.Exam.WebApp.Data.Migrations
                     Birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Tin = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmployeeTypeId = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    BasePay = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +31,10 @@ namespace Sprout.Exam.WebApp.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PayLabel = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DayLabel = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tax = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {

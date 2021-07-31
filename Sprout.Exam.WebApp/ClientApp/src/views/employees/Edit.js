@@ -6,15 +6,22 @@ export class EmployeeEdit extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1, loading: true,loadingSave:false, employeetypes: [] };
+    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1, loading: true,loadingSave:false, employeetypes: [], basePay: 0, label: '' };
   }
 
-  componentDidMount() {
-    this.getEmployee(this.props.match.params.id);
-    this.populateEmployeeTypes();
+  async componentDidMount() {
+    await this.getEmployee(this.props.match.params.id);
+    await this.populateEmployeeTypes();
+    await this.getEmployeeTypeLabel(this.state.typeId);
   }
+
   handleChange(event) {
     this.setState({ [event.target.name] : event.target.value});
+  }
+
+  async handleddlChange(event) {
+    await this.setState({ [event.target.name] : event.target.value});
+    await this.getEmployeeTypeLabel(this.state.typeId);
   }
 
   handleSubmit(e){
@@ -51,9 +58,15 @@ export class EmployeeEdit extends Component {
 </div>
 <div className='form-group col-md-6'>
   <label htmlFor='inputEmployeeType4'>Employee Type: *</label>
-  <select id='inputEmployeeType4' onChange={this.handleChange.bind(this)} value={this.state.typeId}  name="typeId" className='form-control'>
+  <select id='inputEmployeeType4' onChange={this.handleddlChange.bind(this)} value={this.state.typeId}  name="typeId" className='form-control'>
     {optionItems}
   </select>
+</div>
+</div>
+<div className='form-row'>
+<div className='form-group col-md-6'>
+  <label htmlFor='inputBasePay4'>{this.state.label}: </label>
+  <input type='text' className='form-control' id='inputBasePay4' onChange={this.handleChange.bind(this)} name="basePay" value={this.state.basePay} placeholder='Full Name' />
 </div>
 </div>
 <button type="submit" onClick={this.handleSubmit.bind(this)} disabled={this.state.loadingSave} className="btn btn-primary mr-2">{this.state.loadingSave?"Loading...": "Save"}</button>
@@ -98,7 +111,7 @@ export class EmployeeEdit extends Component {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
     const data = await response.json();
-    this.setState({ id: data.id,fullName: data.fullName,birthdate: data.birthdate,tin: data.tin,typeId: data.typeId, loading: false,loadingSave: false });
+    this.setState({ id: data.id,fullName: data.fullName,birthdate: data.birthdate,tin: data.tin,typeId: data.typeId, loading: false,loadingSave: false, basePay: data.basePay });
   }
 
   async populateEmployeeTypes() {
@@ -109,5 +122,15 @@ export class EmployeeEdit extends Component {
     const data = await response.json();
     console.log(data);
     this.setState({ employeetypes: data, loading: false });
+  }
+
+  async getEmployeeTypeLabel(id) {
+    this.setState({ loading: true,loadingSave: false });
+    const token = await authService.getAccessToken();
+    const response = await fetch('api/employeetype/' + id, {
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    this.setState({ label: data.payLabel, loading: false });
   }
 }

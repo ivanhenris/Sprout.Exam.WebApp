@@ -53,6 +53,9 @@ namespace Sprout.Exam.WebApp.Repository
             {
                 employeeType.Id = input.Id;
                 employeeType.TypeName = input.TypeName;
+                employeeType.PayLabel = input.PayLabel;
+                employeeType.DayLabel = input.DayLabel;
+                employeeType.Tax = input.Tax;
                 await _context.SaveChangesAsync();
             }
         }

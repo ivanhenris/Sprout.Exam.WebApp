@@ -10,5 +10,6 @@ namespace Sprout.Exam.Business.DataTransferObjects
         public string Tin { get; set; }
         public DateTime Birthdate { get; set; }
         public int TypeId { get; set; }
+        public decimal BasePay { get; set; }
     }
 }
