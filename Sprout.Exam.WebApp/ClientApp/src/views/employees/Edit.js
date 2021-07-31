@@ -6,11 +6,12 @@ export class EmployeeEdit extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1, loading: true,loadingSave:false };
+    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1, loading: true,loadingSave:false, employeetypes: [] };
   }
 
   componentDidMount() {
     this.getEmployee(this.props.match.params.id);
+    this.populateEmployeeTypes();
   }
   handleChange(event) {
     this.setState({ [event.target.name] : event.target.value});
@@ -24,6 +25,10 @@ export class EmployeeEdit extends Component {
   }
 
   render() {
+    let types = this.state.employeetypes;
+    let optionItems = types.map((types) =>
+                <option key={types.id}>{types.typeName}</option>
+            );
 
     let contents = this.state.loading
     ? <p><em>Loading...</em></p>
@@ -47,8 +52,7 @@ export class EmployeeEdit extends Component {
 <div className='form-group col-md-6'>
   <label htmlFor='inputEmployeeType4'>Employee Type: *</label>
   <select id='inputEmployeeType4' onChange={this.handleChange.bind(this)} value={this.state.typeId}  name="typeId" className='form-control'>
-    <option value='1'>Regular</option>
-    <option value='2'>Contractual</option>
+    {optionItems}
   </select>
 </div>
 </div>
@@ -95,5 +99,15 @@ export class EmployeeEdit extends Component {
     });
     const data = await response.json();
     this.setState({ id: data.id,fullName: data.fullName,birthdate: data.birthdate,tin: data.tin,typeId: data.typeId, loading: false,loadingSave: false });
+  }
+
+  async populateEmployeeTypes() {
+    const token = await authService.getAccessToken();
+    const response = await fetch('api/employeetype', {
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    console.log(data);
+    this.setState({ employeetypes: data, loading: false });
   }
 }

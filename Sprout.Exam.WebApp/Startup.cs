@@ -33,6 +33,7 @@ namespace Sprout.Exam.WebApp
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IRepository<EmployeeDto, int>, EmployeeRepository>();
+            services.AddScoped<IRepository<EmployeeType, int>, EmployeeTypeRepository>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

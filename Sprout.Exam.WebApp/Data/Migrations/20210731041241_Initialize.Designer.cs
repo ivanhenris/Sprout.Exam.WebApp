@@ -10,8 +10,8 @@ using Sprout.Exam.WebApp.Data;
 namespace Sprout.Exam.WebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210730104116_EmployeeInitialize")]
-    partial class EmployeeInitialize
+    [Migration("20210731041241_Initialize")]
+    partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -285,6 +285,21 @@ namespace Sprout.Exam.WebApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employee");
+                });
+
+            modelBuilder.Entity("Sprout.Exam.Business.DataTransferObjects.EmployeeType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("TypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeType");
                 });
 
             modelBuilder.Entity("Sprout.Exam.WebApp.Models.ApplicationUser", b =>
