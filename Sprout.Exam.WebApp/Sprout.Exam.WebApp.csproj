@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\views\employees\" />
+    <Folder Include="SQLScript\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -42,6 +42,9 @@ namespace Sprout.Exam.WebApp.Controllers
             var item = await _employeeTypeRepository.GetById(input.Id);
             if (item == null) return NotFound();
             item.TypeName = input.TypeName;
+            item.PayLabel = input.PayLabel;
+            item.DayLabel = input.DayLabel;
+            item.Tax = input.Tax;
 
             await _employeeTypeRepository.Update(item);
             return Ok(item);
@@ -55,7 +58,10 @@ namespace Sprout.Exam.WebApp.Controllers
             var employeeType = new EmployeeType
             {
                 Id = id,
-                TypeName = input.TypeName
+                TypeName = input.TypeName,
+                PayLabel = input.PayLabel,
+                DayLabel = input.DayLabel,
+                Tax = input.Tax
             };
 
             await _employeeTypeRepository.Insert(employeeType);

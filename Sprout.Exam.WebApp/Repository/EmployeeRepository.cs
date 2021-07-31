@@ -50,6 +50,7 @@ namespace Sprout.Exam.WebApp.Repository
                 employee.Tin = employeeDto.Tin;
                 employee.Birthdate = employeeDto.Birthdate;
                 employee.TypeId = employeeDto.TypeId;
+                employee.BasePay = employeeDto.BasePay;
                 await _context.SaveChangesAsync();
             }
         }

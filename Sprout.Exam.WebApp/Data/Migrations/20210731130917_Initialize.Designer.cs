@@ -10,7 +10,7 @@ using Sprout.Exam.WebApp.Data;
 namespace Sprout.Exam.WebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210731041241_Initialize")]
+    [Migration("20210731130917_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -266,6 +266,9 @@ namespace Sprout.Exam.WebApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("BasePay")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("datetime2");
 
@@ -293,6 +296,15 @@ namespace Sprout.Exam.WebApp.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DayLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PayLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Tax")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TypeName")
                         .HasColumnType("nvarchar(max)");

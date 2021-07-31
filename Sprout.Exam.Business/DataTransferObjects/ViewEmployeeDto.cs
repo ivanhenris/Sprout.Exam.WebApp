@@ -13,5 +13,6 @@ namespace Sprout.Exam.Business.DataTransferObjects
         public string Tin { get; set; }
         public string EmployeeType { get; set; }
         public bool IsDeleted { get; set; }
+        public decimal BasePay { get; set; }
     }
 }

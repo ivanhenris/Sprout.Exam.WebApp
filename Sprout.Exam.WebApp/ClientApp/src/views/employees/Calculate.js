@@ -9,9 +9,9 @@ export class EmployeeCalculate extends Component {
     this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1,absentDays: 0,workedDays: 0,netIncome: 0, loading: true,loadingCalculate:false, label: '' };
   }
 
-  componentDidMount() {
-    this.getEmployee(this.props.match.params.id);
-    this.getEmployeeTypeLabel(this.state.typeId);
+  async componentDidMount() {
+    await this.getEmployee(this.props.match.params.id);
+    await this.getEmployeeTypeLabel(this.state.typeId);
   }
   handleChange(event) {
     this.setState({ [event.target.name] : event.target.value});
@@ -42,7 +42,7 @@ export class EmployeeCalculate extends Component {
 
 <div className='form-row'>
 <div className='form-group col-md-12'>
-  <label >Birthdate: <b>{this.state.birthdate}</b></label>
+  <label >Birthdate: <b>{new Date(this.state.birthdate).toDateString().slice(4,15)}</b></label>
 </div>
 </div>
 
@@ -131,6 +131,6 @@ export class EmployeeCalculate extends Component {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
     const data = await response.json();
-    this.setState({ label: data.typeName, loading: false });
+    this.setState({ label: data.dayLabel, loading: false });
   }
 }

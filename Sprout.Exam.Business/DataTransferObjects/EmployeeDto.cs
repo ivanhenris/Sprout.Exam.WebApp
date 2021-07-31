@@ -15,5 +15,6 @@ namespace Sprout.Exam.Business.DataTransferObjects
         [Column("EmployeeTypeId")]
         public int TypeId { get; set; }
         public bool IsDeleted { get; set; }
+        public decimal BasePay { get; set; }
     }
 }

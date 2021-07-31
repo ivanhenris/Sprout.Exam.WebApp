@@ -42,7 +42,8 @@ namespace Sprout.Exam.WebApp.Controllers
                     Birthdate = employee.Birthdate,
                     Tin = employee.Tin,
                     EmployeeType = employeeType.ToString(),
-                    IsDeleted = employee.IsDeleted
+                    IsDeleted = employee.IsDeleted,
+                    BasePay = employee.BasePay
                 };
                 viewResults.Add(viewEmployee);
             }
@@ -73,6 +74,7 @@ namespace Sprout.Exam.WebApp.Controllers
             item.Tin = input.Tin;
             item.Birthdate = input.Birthdate;
             item.TypeId = input.TypeId;
+            item.BasePay = input.BasePay;
 
             await _employeeRepository.Update(item);
             return Ok(item);
@@ -93,7 +95,8 @@ namespace Sprout.Exam.WebApp.Controllers
                 FullName = input.FullName,
                 Id = id,
                 Tin = input.Tin,
-                TypeId = input.TypeId
+                TypeId = input.TypeId,
+                BasePay = input.BasePay
             };
 
             await _employeeRepository.Insert(employee);

@@ -6,7 +6,7 @@ export class EmployeeCreate extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { fullName: '',birthdate: '',tin: '',typeId: 1, loading: false,loadingSave:false, employeetypes: [], label: '', prevValue: 1 };
+    this.state = { fullName: '',birthdate: '',tin: '',typeId: 1, loading: false,loadingSave:false, employeetypes: [], label: '', basePay: 0};
   }
 
   componentDidMount() {
@@ -63,10 +63,10 @@ export class EmployeeCreate extends Component {
 </div>
 <div className="form-row">
 <div className='form-group col-md-6'>
-  <label htmlFor='inputWorkPay4'>
+  <label htmlFor='inputBasePay4'>
   {this.state.label}
   </label>
-  <input type='text' className='form-control' id='inputWorkPay4' onChange={this.handleChange.bind(this)} value={this.state.workedDays} name="workPay" />
+  <input type='text' className='form-control' id='inputBasePay4' onChange={this.handleChange.bind(this)} value={this.state.basePay} name="basePay" placeholder='0'/>
 </div>
 </div>
 
@@ -121,7 +121,7 @@ export class EmployeeCreate extends Component {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
     const data = await response.json();
-    this.setState({ label: data.typeName, loading: false });
+    this.setState({ label: data.payLabel, loading: false });
   }
 
 }
