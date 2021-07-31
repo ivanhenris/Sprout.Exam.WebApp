@@ -285,6 +285,21 @@ namespace Sprout.Exam.WebApp.Data.Migrations
                     b.ToTable("Employee");
                 });
 
+            modelBuilder.Entity("Sprout.Exam.Business.DataTransferObjects.EmployeeType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("TypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeType");
+                });
+
             modelBuilder.Entity("Sprout.Exam.WebApp.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")

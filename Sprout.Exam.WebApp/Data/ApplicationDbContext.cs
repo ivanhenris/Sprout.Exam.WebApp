@@ -20,6 +20,7 @@ namespace Sprout.Exam.WebApp.Data
         }
 
         public virtual DbSet<EmployeeDto> Employee { get; set; }
+        public virtual DbSet<EmployeeType> EmployeeType { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

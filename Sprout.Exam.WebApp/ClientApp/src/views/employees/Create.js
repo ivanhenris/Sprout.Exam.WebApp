@@ -6,10 +6,11 @@ export class EmployeeCreate extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { fullName: '',birthdate: '',tin: '',typeId: 1, loading: false,loadingSave:false };
+    this.state = { fullName: '',birthdate: '',tin: '',typeId: 1, loading: false,loadingSave:false, employeetypes: [] };
   }
 
   componentDidMount() {
+    this.populateEmployeeTypes();
   }
 
   handleChange(event) {
@@ -24,7 +25,12 @@ export class EmployeeCreate extends Component {
   }
 
   render() {
-
+    let types = this.state.employeetypes;
+    let optionItems = types.map((types) =>
+                <option key={types.id}>{types.typeName}</option>
+            );
+    console.log(types);
+    console.log(optionItems);
     let contents = this.state.loading
     ? <p><em>Loading...</em></p>
     : <div>
@@ -47,8 +53,7 @@ export class EmployeeCreate extends Component {
 <div className='form-group col-md-6'>
   <label htmlFor='inputEmployeeType4'>Employee Type: *</label>
   <select id='inputEmployeeType4' onChange={this.handleChange.bind(this)} value={this.state.typeId}  name="typeId" className='form-control'>
-    <option value='1'>Regular</option>
-    <option value='2'>Contractual</option>
+    {optionItems}
   </select>
 </div>
 </div>
@@ -84,6 +89,16 @@ export class EmployeeCreate extends Component {
     else{
         alert("There was an error occured.");
     }
+  }
+
+  async populateEmployeeTypes() {
+    const token = await authService.getAccessToken();
+    const response = await fetch('api/employeetype', {
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    console.log(data);
+    this.setState({ employeetypes: data, loading: false });
   }
 
 }
