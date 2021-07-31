@@ -6,7 +6,7 @@ export class EmployeeCalculate extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1,period: 0,netIncome: 0, loading: true,loadingCalculate:false, label: '', payLabel: '', tax: 0, basePay: 0 };
+    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1,period: 0,netIncome: 0, loading: true,loadingCalculate:false, label: '', payLabel: '', tax: 0, basePay: 0, employeeData: [] };
   }
 
   async componentDidMount() {
@@ -21,6 +21,10 @@ export class EmployeeCalculate extends Component {
     await this.setState({ [event.target.name] : event.target.value});
     await this.getEmployeeTypeLabel(this.state.typeId);
   }
+
+  roundToTwo(num) {
+    return +(Math.round(num + "e+2")  + "e-2");
+}
 
   handleSubmit(e){
       e.preventDefault();
@@ -82,7 +86,7 @@ export class EmployeeCalculate extends Component {
 
 <div className="form-row">
 <div className='form-group col-md-12'>
-  <label>Net Income: <b>{this.state.netIncome}</b></label>
+  <label>Net Income: <b>{this.roundToTwo(this.state.netIncome)}</b></label>
 </div>
 </div>
 
@@ -138,6 +142,6 @@ export class EmployeeCalculate extends Component {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
     const data = await response.json();
-    this.setState({ label: data.dayLabel, payLabel: data.payLabel, tax: data.tax, loading: false });
+    this.setState({ label: data.dayLabel, payLabel: data.payLabel, tax: data.tax, loading: false, employeeType: data });
   }
 }

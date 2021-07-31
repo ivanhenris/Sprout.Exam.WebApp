@@ -8,5 +8,8 @@ namespace Sprout.Exam.Business.DataTransferObjects
     {
         public int Id { get; set; }
         public decimal Period { get; set; }
+        public decimal BasePay { get; set; }
+        public decimal Tax { get; set; }
+        public EmployeeType EmployeeType { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Sprout.Exam.Business.DataTransferObjects;
 using Sprout.Exam.Common.Enums;
 using Sprout.Exam.WebApp.Repository;
+using Sprout.Exam.Business.Calculation;
 
 namespace Sprout.Exam.WebApp.Controllers
 {
@@ -128,20 +129,19 @@ namespace Sprout.Exam.WebApp.Controllers
         /// <param name="workedDays"></param>
         /// <returns></returns>
         [HttpPost("{id}/calculate")]
-        public async Task<IActionResult> Calculate(SalaryDetails salary)
+        public async Task<IActionResult> Calculate(SalaryDetails salaryDetails)
         {
-            var result = await Task.FromResult(StaticEmployees.ResultList.FirstOrDefault(m => m.Id == salary.Id));
-
-            if (result == null) return NotFound();
-            var type = (Common.Enums.EmployeeType) result.TypeId;
+            if (salaryDetails.EmployeeType == null) return NotFound();
+            var type = (Common.Enums.EmployeeType) salaryDetails.EmployeeType.Id;
+            var calculator = new SalaryCalculatorFactory(type).GetEmployeeTypeSalaryCalculator();
+            var salary = await Task.Run(() => calculator.CalculateSalary(salaryDetails));
             return type switch
             {
                 Common.Enums.EmployeeType.Regular =>
-                    //create computation for regular.
-                    Ok(25000),
+                    Ok(salary),
                 Common.Enums.EmployeeType.Contractual =>
                     //create computation for contractual.
-                    Ok(20000),
+                    Ok(salary),
                 _ => NotFound("Employee Type not found")
             };
 
