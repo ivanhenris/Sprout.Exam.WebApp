@@ -27,7 +27,7 @@ export class EmployeeEdit extends Component {
   render() {
     let types = this.state.employeetypes;
     let optionItems = types.map((types) =>
-                <option key={types.id}>{types.typeName}</option>
+                <option key={types.id} value={types.id}>{types.typeName}</option>
             );
 
     let contents = this.state.loading
