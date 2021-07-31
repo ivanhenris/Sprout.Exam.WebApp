@@ -31,7 +31,22 @@ namespace Sprout.Exam.WebApp.Controllers
         public async Task<IActionResult> Get()
         {
             var result = await _employeeRepository.GetAll();
-            return Ok(result);
+            List<ViewEmployeeDto> viewResults = new List<ViewEmployeeDto>();
+            foreach(var employee in result)
+            {
+                var employeeType = (Common.Enums.EmployeeType)employee.TypeId;
+                var viewEmployee = new ViewEmployeeDto
+                {
+                    Id = employee.Id,
+                    FullName = employee.FullName,
+                    Birthdate = employee.Birthdate,
+                    Tin = employee.Tin,
+                    EmployeeType = employeeType.ToString(),
+                    IsDeleted = employee.IsDeleted
+                };
+                viewResults.Add(viewEmployee);
+            }
+            return Ok(viewResults);
         }
 
         /// <summary>

@@ -6,15 +6,21 @@ export class EmployeeCreate extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { fullName: '',birthdate: '',tin: '',typeId: 1, loading: false,loadingSave:false, employeetypes: [] };
+    this.state = { fullName: '',birthdate: '',tin: '',typeId: 1, loading: false,loadingSave:false, employeetypes: [], label: '', prevValue: 1 };
   }
 
   componentDidMount() {
     this.populateEmployeeTypes();
+    this.getEmployeeTypeLabel(this.state.typeId);
   }
 
   handleChange(event) {
     this.setState({ [event.target.name] : event.target.value});
+  }
+
+  async handleddlChange(event) {
+    await this.setState({ [event.target.name] : event.target.value});
+    await this.getEmployeeTypeLabel(this.state.typeId);
   }
 
   handleSubmit(e){
@@ -27,10 +33,8 @@ export class EmployeeCreate extends Component {
   render() {
     let types = this.state.employeetypes;
     let optionItems = types.map((types) =>
-                <option key={types.id}>{types.typeName}</option>
+                <option key={types.id} value={types.id}>{types.typeName}</option>
             );
-    console.log(types);
-    console.log(optionItems);
     let contents = this.state.loading
     ? <p><em>Loading...</em></p>
     : <div>
@@ -52,11 +56,20 @@ export class EmployeeCreate extends Component {
 </div>
 <div className='form-group col-md-6'>
   <label htmlFor='inputEmployeeType4'>Employee Type: *</label>
-  <select id='inputEmployeeType4' onChange={this.handleChange.bind(this)} value={this.state.typeId}  name="typeId" className='form-control'>
+  <select id='inputEmployeeType4' onChange={this.handleddlChange.bind(this)} value={this.state.typeId}  name="typeId" className='form-control'>
     {optionItems}
   </select>
 </div>
 </div>
+<div className="form-row">
+<div className='form-group col-md-6'>
+  <label htmlFor='inputWorkPay4'>
+  {this.state.label}
+  </label>
+  <input type='text' className='form-control' id='inputWorkPay4' onChange={this.handleChange.bind(this)} value={this.state.workedDays} name="workPay" />
+</div>
+</div>
+
 <button type="submit" onClick={this.handleSubmit.bind(this)} disabled={this.state.loadingSave} className="btn btn-primary mr-2">{this.state.loadingSave?"Loading...": "Save"}</button>
 <button type="button" onClick={() => this.props.history.push("/employees/index")} className="btn btn-primary">Back</button>
 </form>
@@ -99,6 +112,16 @@ export class EmployeeCreate extends Component {
     const data = await response.json();
     console.log(data);
     this.setState({ employeetypes: data, loading: false });
+  }
+
+  async getEmployeeTypeLabel(id) {
+    this.setState({ loading: true,loadingSave: false });
+    const token = await authService.getAccessToken();
+    const response = await fetch('api/employeetype/' + id, {
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    this.setState({ label: data.typeName, loading: false });
   }
 
 }

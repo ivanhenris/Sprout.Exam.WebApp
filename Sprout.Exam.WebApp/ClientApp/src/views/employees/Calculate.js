@@ -6,14 +6,20 @@ export class EmployeeCalculate extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1,absentDays: 0,workedDays: 0,netIncome: 0, loading: true,loadingCalculate:false };
+    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1,absentDays: 0,workedDays: 0,netIncome: 0, loading: true,loadingCalculate:false, label: '' };
   }
 
   componentDidMount() {
     this.getEmployee(this.props.match.params.id);
+    this.getEmployeeTypeLabel(this.state.typeId);
   }
   handleChange(event) {
     this.setState({ [event.target.name] : event.target.value});
+  }
+
+  async handleChangeLabel(event) {
+    await this.setState({ [event.target.name] : event.target.value});
+    await this.getEmployeeTypeLabel(this.state.typeId);
   }
 
   handleSubmit(e){
@@ -61,17 +67,10 @@ export class EmployeeCalculate extends Component {
 </div> }
 
 <div className="form-row">
-
-{ this.state.typeId === 1? 
 <div className='form-group col-md-6'>
-  <label htmlFor='inputAbsentDays4'>Absent Days: </label>
+  <label htmlFor='inputAbsentDays4'>{this.state.label} </label>
   <input type='text' className='form-control' id='inputAbsentDays4' onChange={this.handleChange.bind(this)} value={this.state.absentDays} name="absentDays" placeholder='Absent Days' />
-</div> :
-<div className='form-group col-md-6'>
-  <label htmlFor='inputWorkDays4'>Worked Days: </label>
-  <input type='text' className='form-control' id='inputWorkDays4' onChange={this.handleChange.bind(this)} value={this.state.workedDays} name="workedDays" placeholder='Worked Days' />
 </div>
-}
 </div>
 
 <div className="form-row">
@@ -123,5 +122,15 @@ export class EmployeeCalculate extends Component {
         alert("There was an error occured.");
         this.setState({ loading: false,loadingCalculate: false });
     }
+  }
+
+  async getEmployeeTypeLabel(id) {
+    this.setState({ loading: true,loadingSave: false });
+    const token = await authService.getAccessToken();
+    const response = await fetch('api/employeetype/' + id, {
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    this.setState({ label: data.typeName, loading: false });
   }
 }

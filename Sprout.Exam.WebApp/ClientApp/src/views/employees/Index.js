@@ -6,14 +6,22 @@ export class EmployeesIndex extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { employees: [], loading: true };
+    this.state = { employees: [], loading: true, label: '' };
   }
 
   componentDidMount() {
     this.populateEmployeeData();
+    console.log(this.state.employees);
+  }
+
+  getEmployeeTypeName(id)
+  {
+    this.getEmployeeTypeLabel(id);
+    return this.state.label;
   }
 
   static renderEmployeesTable(employees,parent) {
+    console.log(employees);
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
@@ -31,7 +39,7 @@ export class EmployeesIndex extends Component {
               <td>{employee.fullName}</td>
               <td>{new Date(employee.birthdate).toDateString().slice(4,15)}</td>
               <td>{employee.tin}</td>
-              <td>{employee.typeId === 1?"Regular":"Contractual"}</td>
+              <td>{employee.employeeType}</td>
               <td>
               <button type='button' className='btn btn-info mr-2' onClick={() => parent.props.history.push("/employees/" + employee.id + "/edit")} >Edit</button>
               <button type='button' className='btn btn-primary mr-2' onClick={() => parent.props.history.push("/employees/" + employee.id + "/calculate")}>Calculate</button>
@@ -86,5 +94,16 @@ export class EmployeesIndex extends Component {
     else{
       alert("There was an error occured.");
     }
+  }
+
+  async getEmployeeTypeLabel(id) {
+    this.setState({ loading: true,loadingSave: false });
+    const token = await authService.getAccessToken();
+    const response = await fetch('api/employeetype/' + id, {
+      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    this.setState({ label: data.typeName, loading: false });
+    console.log(data);
   }
 }
