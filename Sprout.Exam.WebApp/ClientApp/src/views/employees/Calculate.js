@@ -30,8 +30,9 @@ export class EmployeeCalculate extends Component {
   handleSubmit(e){
       const value = this.state.period;
       let periodCheck = !isNaN(+value);
-      if (!this.state.period) {
+      if (this.state.period === '') {
         e.preventDefault();
+        console.log(this.state.period)
         this.fieldHighlighting();
         alert('Please fill all required fields.');
         return;
