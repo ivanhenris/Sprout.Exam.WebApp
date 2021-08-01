@@ -6,7 +6,7 @@ export class EmployeeCalculate extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1,period: 0,netIncome: 0, loading: true,loadingCalculate:false, label: '', payLabel: '', tax: 0, basePay: 0, employeeData: [] };
+    this.state = { id: 0,fullName: '',birthdate: '',tin: '',typeId: 1,period: 0,netIncome: 0, loading: true,loadingCalculate:false, label: '', payLabel: '', tax: 0, basePay: 0, employeeData: [], errors: []};
   }
 
   async componentDidMount() {
@@ -15,6 +15,7 @@ export class EmployeeCalculate extends Component {
   }
   handleChange(event) {
     this.setState({ [event.target.name] : event.target.value});
+    this.setState({ errors: [] });
   }
 
   async handleChangeLabel(event) {
@@ -27,8 +28,33 @@ export class EmployeeCalculate extends Component {
 }
 
   handleSubmit(e){
+      const value = this.state.period;
+      let periodCheck = !isNaN(+value);
+      if (!this.state.period) {
+        e.preventDefault();
+        this.fieldHighlighting();
+        alert('Please fill all required fields.');
+        return;
+      }
+      else if(periodCheck === false){
+        e.preventDefault();
+        alert('Pay input is invalid');
+        return;
+      }
       e.preventDefault();
       this.calculateSalary();
+  }
+
+  fieldHighlighting() {
+    let errors = [];
+    let {period} = this.state;
+    if(!period) {
+      errors.push('period');
+    }
+    if (errors.length) { 
+      this.setState({ errors });
+      return;
+    }
   }
 
   render() {
@@ -80,7 +106,7 @@ export class EmployeeCalculate extends Component {
 <div className="form-row">
 <div className='form-group col-md-6'>
   <label htmlFor='inputPeriod4'>{this.state.label}: *</label>
-  <input type='text' className='form-control' id='inputPeriod4' onChange={this.handleChange.bind(this)} value={this.state.period} name="period" placeholder='0' />
+  <input type='text' className='form-control' id='inputPeriod4' onChange={this.handleChange.bind(this)} value={this.state.period} name="period" placeholder='0'  style={{ borderColor: this.state.errors.includes('period') ? 'red' : 'LightGray' }}/>
 </div>
 </div>
 
