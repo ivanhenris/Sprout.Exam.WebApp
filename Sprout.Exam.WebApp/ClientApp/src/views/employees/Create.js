@@ -145,9 +145,14 @@ export class EmployeeCreate extends Component {
     const response = await fetch('api/employeetype', {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
-    const data = await response.json();
-    console.log(data);
-    this.setState({ employeetypes: data, loading: false });
+    if(response.status === 500)
+    {
+      alert("There was an error occured.");
+    }
+    else if(response.status === 200) {
+      const data = await response.json();
+      this.setState({ employeetypes: data, loading: false });
+    }
   }
 
   async getEmployeeTypeLabel(id) {
@@ -156,8 +161,14 @@ export class EmployeeCreate extends Component {
     const response = await fetch('api/employeetype/' + id, {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
-    const data = await response.json();
-    this.setState({ label: data.payLabel, loading: false });
+    if(response.status === 500)
+    {
+      alert("There was an error occured.");
+    }
+    else if(response.status === 200) {
+      const data = await response.json();
+      this.setState({ label: data.payLabel, loading: false });
+    }
   }
 
 }

@@ -141,8 +141,16 @@ export class EmployeeCalculate extends Component {
         body: JSON.stringify(this.state)
     };
     const response = await fetch('api/employees/' + this.state.id + '/calculate',requestOptions);
-    const data = await response.json();
-    this.setState({ loadingCalculate: false,netIncome: data });
+    if(response.status === 500) {
+      alert("There was an error occured.");
+    }
+    else if(response.status === 404) {
+      alert("Employee Type not found.");
+    }
+    else if(response.status === 200){
+      const data = await response.json();
+      this.setState({ loadingCalculate: false,netIncome: data });
+    }
   }
 
   async getEmployee(id) {
@@ -169,6 +177,11 @@ export class EmployeeCalculate extends Component {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
     const data = await response.json();
+    console.log(response.status)
+    if(response.status === 500)
+    {
+      alert("There was an error occured.");
+    }
     this.setState({ label: data.dayLabel, payLabel: data.payLabel, tax: data.tax, loading: false, employeeType: data });
   }
 }
