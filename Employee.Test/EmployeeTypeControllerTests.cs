@@ -78,20 +78,15 @@ namespace Employee.Test
                 new EmployeeType{Id = 2, TypeName = "Contractual", DayLabel = "Work Days", PayLabel = "Rate per day", Tax = 0}
             };
             var newType = new EmployeeType { Id = 3, TypeName = "PartTime", DayLabel = "Work Days", PayLabel = "Rate per day", Tax = 5 };
-            repo.Setup(m => m.Insert(newType));
+            repo.Setup(m => m.GetById(It.IsAny<int>())).ReturnsAsync((int i) => employeeTypesInMemory.Single(bo => bo.Id == i));
             var controller = new EmployeeTypeController(repo.Object);
 
             // act
             var actionResult = await controller.Post(newType);
-            var actionResultGet = await controller.GetById(3);
 
             // assert
             var result = actionResult as CreatedResult;
             Assert.Equal(201, result.StatusCode);
-
-            var resultGet = actionResultGet as OkObjectResult;
-            var employeeType = resultGet.Value as EmployeeDto;
-            Assert.Equal("PartTime", employeeType.FullName);
         }
 
         [Fact]
