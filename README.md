@@ -1,4 +1,6 @@
 # Sprout.Exam.WebApp
+NOTE: Please run db upgrade script first. Path: \Sprout.Exam.WebApp\Sprout.Exam.WebApp\SQLScript\UpgradeScript_v1.01.sql
+
  -implement configuration to edit existing employee type details
  
  -implement sql table for storing employee calculated salary for period
