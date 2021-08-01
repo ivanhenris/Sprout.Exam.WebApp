@@ -131,21 +131,17 @@ namespace Sprout.Exam.WebApp.Controllers
         [HttpPost("{id}/calculate")]
         public async Task<IActionResult> Calculate(SalaryDetails salaryDetails)
         {
-            if (salaryDetails.EmployeeType == null) return NotFound();
+            if (salaryDetails.EmployeeType == null) return NotFound("Employee Type not found");
+
             var type = (Common.Enums.EmployeeType) salaryDetails.EmployeeType.Id;
             var calculator = new SalaryCalculatorFactory(type).GetEmployeeTypeSalaryCalculator();
-            var salary = await Task.Run(() => calculator.CalculateSalary(salaryDetails));
-            return type switch
+            if(calculator != null)
             {
-                Common.Enums.EmployeeType.Regular =>
-                    Ok(salary),
-                Common.Enums.EmployeeType.Contractual =>
-                    //create computation for contractual.
-                    Ok(salary),
-                _ => NotFound("Employee Type not found")
-            };
+                var salary = await Task.Run(() => calculator.CalculateSalary(salaryDetails));
+                return Ok(salary);
+            }
 
+            return NotFound("Employee Type not found");
         }
-
     }
 }
