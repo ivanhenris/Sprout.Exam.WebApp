@@ -75,8 +75,14 @@ export class EmployeesIndex extends Component {
     const response = await fetch('api/employees', {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
-    const data = await response.json();
-    this.setState({ employees: data, loading: false });
+    if(response.status === 500)
+    {
+      alert("There was an error occured.");
+    }
+    else if(response.status === 200) {
+      const data = await response.json();
+      this.setState({ employees: data, loading: false });
+    }
   }
 
   async deleteEmployee(id) {
@@ -102,8 +108,13 @@ export class EmployeesIndex extends Component {
     const response = await fetch('api/employeetype/' + id, {
       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
     });
-    const data = await response.json();
-    this.setState({ label: data.typeName, loading: false });
-    console.log(data);
+    if(response.status === 500)
+    {
+      alert("There was an error occured.");
+    }
+    else if(response.status === 200) {
+      const data = await response.json();
+      this.setState({ label: data.typeName, loading: false });
+    }
   }
 }
