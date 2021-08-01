@@ -43,9 +43,9 @@ UPDATE dbo.EmployeeType
 SET PayLabel = 'Rate Per Day', DayLabel = 'Worked Days', Tax = 0
 WHERE TypeName = 'Contractual'
 
-update Employee
-set BasePay = 0
-where BasePay is null
+UPDATE Employee
+SET BasePay = 0
+WHERE BasePay is null
 
 TRUNCATE TABLE [Version]
 GO
