@@ -35,7 +35,7 @@ export class EmployeeEdit extends Component {
         alert('Please fill all required fields.');
         return;
       }
-      else if(basePayCheck === false || this.state.period < 0){
+      else if(basePayCheck === false || this.state.basePay < 0){
         e.preventDefault();
         alert('Pay input is invalid');
         return;
