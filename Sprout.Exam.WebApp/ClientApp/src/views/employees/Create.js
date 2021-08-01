@@ -28,7 +28,7 @@ export class EmployeeCreate extends Component {
   handleSubmit(e){
       const value = this.state.basePay;
       let basePayCheck = !isNaN(+value);
-      if (!this.state.fullName || !this.state.birthdate || !this.state.tin || !this.state.basePay) {
+      if (!this.state.fullName || !this.state.birthdate || !this.state.tin || this.state.basePay  === '') {
         e.preventDefault();
         this.fieldHighlighting();
         alert('Please fill all required fields.');
