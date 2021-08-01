@@ -37,7 +37,7 @@ export class EmployeeCalculate extends Component {
         alert('Please fill all required fields.');
         return;
       }
-      else if(periodCheck === false){
+      else if(periodCheck === false || this.state.period < 0){
         e.preventDefault();
         alert('Pay input is invalid');
         return;
@@ -182,6 +182,8 @@ export class EmployeeCalculate extends Component {
     {
       alert("There was an error occured.");
     }
-    this.setState({ label: data.dayLabel, payLabel: data.payLabel, tax: data.tax, loading: false, employeeType: data });
+    else if(response.status === 200) {
+      this.setState({ label: data.dayLabel, payLabel: data.payLabel, tax: data.tax, loading: false, employeeType: data });
+    }
   }
 }
