@@ -102,7 +102,7 @@ export class EmployeeEdit extends Component {
 <div className='form-row'>
 <div className='form-group col-md-6'>
   <label htmlFor='inputBasePay4'>{this.state.label}: *</label>
-  <input type='text' className='form-control' id='inputBasePay4' onChange={this.handleChange.bind(this)} name="basePay" value={this.state.basePay} style={{ borderColor: this.state.errors.includes('fullName') ? 'red' : 'LightGray' }}/>
+  <input type='text' className='form-control' id='inputBasePay4' onChange={this.handleChange.bind(this)} name="basePay" value={this.state.basePay} style={{ borderColor: this.state.errors.includes('basePay') ? 'red' : 'LightGray' }}/>
 </div>
 </div>
 <button type="submit" onClick={this.handleSubmit.bind(this)} disabled={this.state.loadingSave} className="btn btn-primary mr-2">{this.state.loadingSave?"Loading...": "Save"}</button>
