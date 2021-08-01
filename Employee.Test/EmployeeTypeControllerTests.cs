@@ -90,8 +90,8 @@ namespace Employee.Test
             Assert.Equal(201, result.StatusCode);
 
             var resultGet = actionResultGet as OkObjectResult;
-            var employeeType = resultGet.Value as EmployeeType;
-            Assert.Equal("PartTime", employeeType.TypeName);
+            var employeeType = resultGet.Value as EmployeeDto;
+            Assert.Equal("PartTime", employeeType.FullName);
         }
 
         [Fact]
